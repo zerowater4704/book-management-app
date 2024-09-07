@@ -5,6 +5,7 @@ interface IUser extends Document {
   email: string;
   password: string;
   image?: string;
+  reviews: mongoose.Schema.Types.ObjectId[];
 }
 
 const userSchema: Schema = new Schema({
@@ -23,6 +24,7 @@ const userSchema: Schema = new Schema({
     minlength: 6,
   },
   image: { type: String },
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
 });
 
 export default mongoose.model<IUser>("User", userSchema);
