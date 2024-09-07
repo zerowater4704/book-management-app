@@ -24,22 +24,22 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const userSchema = new mongoose_1.Schema({
-    name: {
+const bookSchema = new mongoose_1.Schema({
+    title: {
         type: String,
         require: true,
     },
-    email: {
+    author: {
         type: String,
         require: true,
-        unique: true,
     },
-    password: {
+    description: {
         type: String,
-        require: true,
-        minlength: 6,
     },
-    image: { type: String },
+    image: {
+        type: String,
+    },
     reviews: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Review" }],
+    addedBy: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "User", require: true },
 });
-exports.default = mongoose_1.default.model("User", userSchema);
+exports.default = mongoose_1.default.model("Book", bookSchema);
