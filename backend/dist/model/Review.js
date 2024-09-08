@@ -28,20 +28,20 @@ const reviewSchema = new mongoose_1.Schema({
     book: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "Book",
-        require: true,
+        required: true,
     },
     user: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "User",
-        require: true,
+        required: true,
     },
     content: {
         type: String,
-        require: true,
+        required: true,
     },
     rating: {
         type: Number,
-        require: true,
+        required: true,
         max: 5,
         min: 1,
     },
