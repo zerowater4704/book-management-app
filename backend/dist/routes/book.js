@@ -8,5 +8,6 @@ router.post("/add", authenticateToken_1.authenticateToken, book_controllers_1.ad
 router.get("/books", book_controllers_1.getBooks);
 router.get("/:id", book_controllers_1.getBook);
 router.put("/updatedbook", authenticateToken_1.authenticateToken, book_controllers_1.updateBook);
+router.put("/:id/action", authenticateToken_1.authenticateToken, book_controllers_1.updatelikeBook);
 router.delete("/delete/:id", authenticateToken_1.authenticateToken, book_controllers_1.deleteBook);
 exports.default = router;

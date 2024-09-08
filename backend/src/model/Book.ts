@@ -5,18 +5,22 @@ interface IBook extends Document {
   author: string;
   description: string;
   image?: string;
-  reviews: mongoose.Schema.Types.ObjectId[];
+  likeCount: number;
+  dislikeCount: number;
+  likes: mongoose.Schema.Types.ObjectId[];
+  dislikes: mongoose.Schema.Types.ObjectId[];
+  comment: mongoose.Schema.Types.ObjectId[];
   addedBy: mongoose.Schema.Types.ObjectId;
 }
 
 const bookSchema: Schema = new Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
   },
   author: {
     type: String,
-    require: true,
+    required: true,
   },
   description: {
     type: String,
@@ -24,8 +28,26 @@ const bookSchema: Schema = new Schema({
   image: {
     type: String,
   },
-  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
-  addedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", require: true },
+  likeCount: {
+    type: Number,
+    default: 0,
+  },
+  dislikeCount: {
+    type: Number,
+    default: 0,
+  },
+  likes: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  },
+  dislikes: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  },
+  comment: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+  addedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 export default mongoose.model<IBook>("Book", bookSchema);

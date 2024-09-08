@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBook = exports.updateBook = exports.getBook = exports.getBooks = exports.addBook = void 0;
+exports.updatelikeBook = exports.deleteBook = exports.updateBook = exports.getBook = exports.getBooks = exports.addBook = void 0;
 const Book_1 = __importDefault(require("../model/Book"));
 //book追加
 const addBook = async (req, res) => {
@@ -71,6 +71,7 @@ const updateBook = async (req, res) => {
     }
 };
 exports.updateBook = updateBook;
+// book削除
 const deleteBook = async (req, res) => {
     const { id: userId } = req.body.user;
     const bookId = req.params.id;
@@ -80,13 +81,65 @@ const deleteBook = async (req, res) => {
             return res.status(404).json({ message: "本を見つかりません。" });
         }
         if (book.addedBy.toString() !== userId) {
-            return res.status(404).json({ message: "本の更新の権限がありません。" });
+            return res.status(404).json({ message: "本の削除の権限がありません。" });
         }
-        const deleteBooK = await Book_1.default.findByIdAndDelete(bookId);
-        res.status(200).json({ message: "本を削除しました。", deleteBooK });
+        const deleteBook = await Book_1.default.findByIdAndDelete(bookId);
+        res.status(200).json({ message: "本を削除しました。", deleteBook });
     }
     catch (error) {
         res.status(500).json({ message: "book削除に失敗しました。" });
     }
 };
 exports.deleteBook = deleteBook;
+// book like
+const updatelikeBook = async (req, res) => {
+    const { id: userId } = req.body.user;
+    const bookId = req.params.id;
+    const { action } = req.body;
+    try {
+        const book = await Book_1.default.findById(bookId);
+        if (!book) {
+            return res.status(404).json({ message: "本を見つかれません。" });
+        }
+        if (action === "like") {
+            if (!book.likes.includes(userId)) {
+                await book.updateOne({
+                    $pull: {
+                        dislikes: userId,
+                    },
+                    $push: {
+                        likes: userId,
+                    },
+                });
+                return res.status(200).json({ message: "likeを押しました。" });
+            }
+            else {
+                return res.status(400).json({ message: "既にlikeを押しています。" });
+            }
+        }
+        else if (action === "dislike") {
+            if (!book.dislikes.includes(userId)) {
+                await book.updateOne({
+                    $push: {
+                        dislikes: userId,
+                    },
+                    $pull: {
+                        likes: userId,
+                    },
+                });
+                return res.status(200).json({ message: "dislikeを押しました。" });
+            }
+            else {
+                return res.status(400).json({ message: "既にdislikeを押しています。" });
+            }
+        }
+        else {
+            return res.status(400).json({ message: "無効なアクションです。" });
+        }
+    }
+    catch (error) {
+        console.error("エラー内容:", error);
+        res.status(500).json({ message: "LIKEの追加に失敗しました。" });
+    }
+};
+exports.updatelikeBook = updatelikeBook;

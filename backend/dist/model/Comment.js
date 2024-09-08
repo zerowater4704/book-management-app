@@ -24,20 +24,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const bookSchema = new mongoose_1.Schema({
-    title: {
+const commentSchema = new mongoose_1.Schema({
+    book: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "Book",
+        required: true,
+    },
+    user: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+    comment: {
         type: String,
         required: true,
     },
-    author: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-    },
-    image: {
-        type: String,
+    rating: {
+        type: Number,
     },
     likeCount: {
         type: Number,
@@ -47,17 +50,5 @@ const bookSchema = new mongoose_1.Schema({
         type: Number,
         default: 0,
     },
-    likes: {
-        type: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "User" }],
-    },
-    dislikes: {
-        type: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "User" }],
-    },
-    comment: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "Comment" }],
-    addedBy: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
 });
-exports.default = mongoose_1.default.model("Book", bookSchema);
+exports.default = mongoose_1.default.model("Review", commentSchema);
