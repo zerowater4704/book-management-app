@@ -3,10 +3,13 @@ import userRouter from "./routes/user";
 import bookRouter from "./routes/book";
 import commentRouter from "./routes/comment";
 import connectDB from "./db";
+import cors from "cors";
 
 const app = express();
 const PORT = 3000;
 connectDB();
+
+app.use(cors());
 
 app.use(express.json());
 app.use("/api/user", userRouter);
