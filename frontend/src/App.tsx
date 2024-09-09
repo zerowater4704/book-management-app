@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import Signup from "../src/components/user/SignUp";
 import Login from "./components/user/Login";
 import UpdateUser from "./components/user/UpdateUser";
+import DeleteUser from "./components/user/DeleteUser";
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,6 +13,9 @@ const App: React.FC = () => {
     <Router>
       <nav>
         <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
           {!isAuthenticated ? (
             <>
               <li>
@@ -20,12 +24,16 @@ const App: React.FC = () => {
               <li>
                 <Link to="/login">ログイン</Link>
               </li>
+            </>
+          ) : (
+            <>
               <li>
                 <Link to="/update">ユーザー更新</Link>
               </li>
+              <Link to="/" onClick={() => setIsAuthenticated(false)}>
+                ログアウト
+              </Link>
             </>
-          ) : (
-            <li onClick={() => setIsAuthenticated(false)}>ログアウト</li>
           )}
         </ul>
       </nav>
@@ -42,6 +50,10 @@ const App: React.FC = () => {
         <Route
           path="/update"
           element={<UpdateUser setIsAuthenticated={setIsAuthenticated} />}
+        />
+        <Route
+          path="/delete"
+          element={<DeleteUser setIsAuthenticated={setIsAuthenticated} />}
         />
       </Routes>
     </Router>

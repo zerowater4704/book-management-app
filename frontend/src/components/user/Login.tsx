@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { login } from "../../services/userSuervice";
+import { login } from "../../services/userService";
 import { useNavigate } from "react-router-dom";
 
 interface LoginProps {

@@ -51,3 +51,15 @@ export const updateUser = async (
   );
   return response.data;
 };
+
+export const deleteUser = async (password: string) => {
+  const token = localStorage.getItem("userToken");
+  const response = await axios.delete(`${API_URL}/delete`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: { password },
+  });
+  localStorage.removeItem("userToken");
+  return response.data;
+};
