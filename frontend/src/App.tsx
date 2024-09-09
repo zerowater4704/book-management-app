@@ -5,6 +5,8 @@ import Signup from "../src/components/user/SignUp";
 import Login from "./components/user/Login";
 import UpdateUser from "./components/user/UpdateUser";
 import DeleteUser from "./components/user/DeleteUser";
+import AddBook from "./components/book/AddBook";
+import BookList from "./components/book/BookList";
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -16,6 +18,14 @@ const App: React.FC = () => {
           <li>
             <Link to="/">Home</Link>
           </li>
+          <li>
+            <Link to="/books">書籍一覧</Link>
+          </li>
+          {isAuthenticated && (
+            <li>
+              <Link to="/books/add">書籍追加</Link>
+            </li>
+          )}
           {!isAuthenticated ? (
             <>
               <li>
@@ -55,6 +65,8 @@ const App: React.FC = () => {
           path="/delete"
           element={<DeleteUser setIsAuthenticated={setIsAuthenticated} />}
         />
+        <Route path="/books/add" element={<AddBook />} />
+        <Route path="/books" element={<BookList />} />
       </Routes>
     </Router>
   );

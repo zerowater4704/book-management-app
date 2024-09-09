@@ -70,7 +70,6 @@ const SignUp: React.FC<SignUpProps> = ({ setIsAuthenticated }) => {
           onChange={(e) =>
             setImage(e.target.files ? e.target.files[0].name : null)
           }
-          placeholder="Password"
         />
       </div>
       <button type="submit">会員登録</button>
