@@ -27,3 +27,27 @@ export const login = async (email: string, password: string) => {
   }
   return response.data;
 };
+
+export const updateUser = async (
+  name: string,
+  email: string,
+  password: string,
+  image?: string
+) => {
+  const token = localStorage.getItem("userToken");
+  const response = await axios.put(
+    `${API_URL}/update`,
+    {
+      name,
+      email,
+      password,
+      image,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
