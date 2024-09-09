@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { register } from "../../services/userSuervice";
+import { register } from "../../services/userService";
 import { useNavigate } from "react-router-dom";
 
 interface SignUpProps {
