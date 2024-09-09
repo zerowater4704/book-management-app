@@ -5,5 +5,6 @@ const authenticateToken_1 = require("../middlewares/authenticateToken/authentica
 const comment_controllers_1 = require("../controllers/comment-controllers");
 const router = (0, express_1.Router)();
 router.post("/add", authenticateToken_1.authenticateToken, comment_controllers_1.createComment);
+router.put("/:id/update", authenticateToken_1.authenticateToken, comment_controllers_1.updateComment);
 router.delete("/:id/delete", authenticateToken_1.authenticateToken, comment_controllers_1.deleteComment);
 exports.default = router;

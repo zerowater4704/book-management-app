@@ -3,9 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteComment = exports.createComment = void 0;
+exports.deleteComment = exports.updateComment = exports.createComment = void 0;
 const Comment_1 = __importDefault(require("../model/Comment"));
 const Book_1 = __importDefault(require("../model/Book"));
+// コメント作成
 const createComment = async (req, res) => {
     const { id: userId } = req.body.user;
     const { bookId, comment, rating } = req.body;
@@ -30,6 +31,32 @@ const createComment = async (req, res) => {
     }
 };
 exports.createComment = createComment;
+// コメント更新
+const updateComment = async (req, res) => {
+    const { id: userId } = req.body.user;
+    const commentId = req.params.id;
+    const { comment } = req.body;
+    try {
+        const existingComment = await Comment_1.default.findById(commentId);
+        if (!existingComment) {
+            return res.status(404).json({ message: "コメントを見つかれません。" });
+        }
+        if (existingComment.user.toString() !== userId) {
+            return res
+                .status(403)
+                .json({ message: "コメントを更新する権限がありません。" });
+        }
+        const updatedComment = await Comment_1.default.findByIdAndUpdate(commentId, {
+            comment,
+        }, { new: true });
+        res.status(200).json(updatedComment);
+    }
+    catch (error) {
+        res.status(500).json({ message: "updateCommentに失敗しました。" });
+    }
+};
+exports.updateComment = updateComment;
+// コメント削除
 const deleteComment = async (req, res) => {
     const { id: userId } = req.body.user;
     const commentId = req.params.id;
@@ -40,7 +67,7 @@ const deleteComment = async (req, res) => {
         }
         if (comment.user.toString() !== userId) {
             return res
-                .status(404)
+                .status(403)
                 .json({ message: "コメント削除する権限がありません。" });
         }
         const deleteComment = await Comment_1.default.findByIdAndDelete(commentId);
