@@ -3,6 +3,7 @@ import { useState } from "react";
 import Home from "./components/Home";
 import Signup from "../src/components/user/SignUp";
 import Login from "./components/user/Login";
+import UpdateUser from "./components/user/UpdateUser";
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,6 +20,9 @@ const App: React.FC = () => {
               <li>
                 <Link to="/login">ログイン</Link>
               </li>
+              <li>
+                <Link to="/update">ユーザー更新</Link>
+              </li>
             </>
           ) : (
             <li onClick={() => setIsAuthenticated(false)}>ログアウト</li>
@@ -34,6 +38,10 @@ const App: React.FC = () => {
         <Route
           path="/login"
           element={<Login setIsAuthenticated={setIsAuthenticated} />}
+        />
+        <Route
+          path="/update"
+          element={<UpdateUser setIsAuthenticated={setIsAuthenticated} />}
         />
       </Routes>
     </Router>
