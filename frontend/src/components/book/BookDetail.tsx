@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { getBook } from "../../services/bookService";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { getBook, deleteBook } from "../../services/bookService";
 
 const BookDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,6 +27,17 @@ const BookDetail: React.FC = () => {
     fetchBook();
   }, [id]);
 
+  const handleDelete = async () => {
+    if (book && book.addedBy._id === userId) {
+      try {
+        await deleteBook(id!);
+        navigate("/");
+      } catch (error) {
+        console.error("書籍削除に失敗しました。");
+      }
+    }
+  };
+
   if (!book) {
     return <p>Loading...</p>;
   }
@@ -36,8 +47,14 @@ const BookDetail: React.FC = () => {
       <h2>{book.title}</h2>
       <p>著者:{book.author}</p>
       <p>作成者:{book.addedBy.name}</p>
+      <p>説明:{book.description}</p>
       {book.image && <img src={book.image} alt={book.title} />}
-      {userId === book.addedBy && <button>削除</button>}
+      {userId === book.addedBy._id && (
+        <>
+          <Link to={`/books/${id}/update`}>編集</Link>
+          <button onClick={handleDelete}>削除</button>
+        </>
+      )}
     </div>
   );
 };
