@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getBook, deleteBook } from "../../services/bookService";
+import CommentList from "../comment/CommentList";
 
 const BookDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -55,6 +56,9 @@ const BookDetail: React.FC = () => {
           <button onClick={handleDelete}>削除</button>
         </>
       )}
+      <div>
+        <CommentList bookId={book._id} />
+      </div>
     </div>
   );
 };

@@ -22,12 +22,30 @@ export const createComment = async (req: Request, res: Response) => {
     });
 
     const savedReview = await newReview.save();
+    const populatedReview = await Comment.findById(savedReview._id).populate(
+      "user",
+      "name"
+    );
     findBook.comment.push(savedReview.id);
     await findBook.save();
 
-    res.status(200).json(savedReview);
+    res.status(200).json(populatedReview);
   } catch (error) {
     res.status(500).json({ message: "レビュー作成に失敗しました。" });
+  }
+};
+
+export const getComments = async (req: Request, res: Response) => {
+  const bookId = req.params.id;
+
+  try {
+    const comments = await Comment.find({ book: bookId }).populate(
+      "user",
+      "name"
+    );
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(500).json({ message: "コメントの取得に失敗しました。" });
   }
 };
 
