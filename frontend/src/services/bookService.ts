@@ -35,6 +35,32 @@ export const getBook = async (id: string) => {
   }
 };
 
+export const updateBook = async (
+  id: string,
+  title: string,
+  author: string,
+  description: string,
+  image?: string
+) => {
+  const token = localStorage.getItem("userToken");
+  try {
+    const response = await axios.put(
+      `${API_URL}/updatedbook`,
+      {
+        bookId: id,
+        title,
+        author,
+        description,
+        image,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("書籍更新に失敗しました。", error);
+  }
+};
+
 export const toggleLike = async (
   bookId: string,
   action: string,
@@ -58,5 +84,19 @@ export const toggleLike = async (
   } catch (error) {
     console.error("いいねのAPI呼び出しに失敗しました。", error);
     throw error;
+  }
+};
+
+export const deleteBook = async (id: string) => {
+  try {
+    const token = localStorage.getItem("userToken");
+    const response = await axios.delete(`${API_URL}/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("書籍削除に失敗しました。", error);
   }
 };

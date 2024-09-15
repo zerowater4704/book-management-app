@@ -60,7 +60,6 @@ const BookList: React.FC = () => {
               <Link to={`/books/${book._id}`}>{book.title}</Link>
             </h3>
             <p>{book.author}</p>
-            <p>{book.description}</p>
             <p>いいね{book.likes ? book.likes.length : 0}</p>
             <button
               onClick={() =>

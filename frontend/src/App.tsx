@@ -8,6 +8,7 @@ import DeleteUser from "./components/user/DeleteUser";
 import AddBook from "./components/book/AddBook";
 import BookList from "./components/book/BookList";
 import BookDetail from "./components/book/BookDetail";
+import UpdateBook from "./components/book/UpdateBook";
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -86,6 +87,7 @@ const App: React.FC = () => {
         <Route path="/books/add" element={<AddBook />} />
         <Route path="/books" element={<BookList />} />
         <Route path="/books/:id" element={<BookDetail />} />
+        <Route path="/books/:id/update" element={<UpdateBook />} />
       </Routes>
     </Router>
   );
