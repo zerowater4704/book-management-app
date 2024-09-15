@@ -49,7 +49,9 @@ export const loginUser = async (req: Request, res: Response) => {
       { expiresIn: "1h" }
     );
 
-    return res.status(200).send({ token });
+    return res
+      .status(200)
+      .json({ token, user: { name: user.name, id: user._id } });
   } catch (error) {
     res.status(500).json({ message: "ログインAPIでエラーがあります。", error });
   }

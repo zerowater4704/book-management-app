@@ -37,7 +37,7 @@ export const getBook = async (req: Request, res: Response) => {
   const bookId = req.params.id;
 
   try {
-    const findBook = await Book.findById(bookId);
+    const findBook = await Book.findById(bookId).populate("addedBy", "name");
     if (!findBook) {
       return res.status(404).json({ message: "本を見つかれません。" });
     }

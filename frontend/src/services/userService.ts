@@ -22,10 +22,14 @@ export const login = async (email: string, password: string) => {
     email,
     password,
   });
+  console.log("ログインレスポンス:", response.data);
   if (response.data.token) {
     localStorage.setItem("userToken", response.data.token);
+    localStorage.setItem("userName", response.data.user.name);
+    return response.data;
+  } else {
+    throw new Error("ログインに失敗しました。ユーザー情報が見つかりません。");
   }
-  return response.data;
 };
 
 export const updateUser = async (

@@ -42,7 +42,9 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ message: "パスワードが間違っています。" });
         }
         const token = jsonwebtoken_1.default.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
-        return res.status(200).send({ token });
+        return res
+            .status(200)
+            .json({ token, user: { name: user.name, id: user._id } });
     }
     catch (error) {
         res.status(500).json({ message: "ログインAPIでエラーがあります。", error });
