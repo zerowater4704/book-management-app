@@ -40,7 +40,7 @@ exports.getBooks = getBooks;
 const getBook = async (req, res) => {
     const bookId = req.params.id;
     try {
-        const findBook = await Book_1.default.findById(bookId);
+        const findBook = await Book_1.default.findById(bookId).populate("addedBy", "name");
         if (!findBook) {
             return res.status(404).json({ message: "本を見つかれません。" });
         }
