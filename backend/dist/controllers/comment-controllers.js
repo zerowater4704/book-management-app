@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteComment = exports.updateComment = exports.createComment = void 0;
+exports.deleteComment = exports.updateComment = exports.getComments = exports.createComment = void 0;
 const Comment_1 = __importDefault(require("../model/Comment"));
 const Book_1 = __importDefault(require("../model/Book"));
 // コメント作成
@@ -22,15 +22,27 @@ const createComment = async (req, res) => {
             book: bookId,
         });
         const savedReview = await newReview.save();
+        const populatedReview = await Comment_1.default.findById(savedReview._id).populate("user", "name");
         findBook.comment.push(savedReview.id);
         await findBook.save();
-        res.status(200).json(savedReview);
+        res.status(200).json(populatedReview);
     }
     catch (error) {
         res.status(500).json({ message: "レビュー作成に失敗しました。" });
     }
 };
 exports.createComment = createComment;
+const getComments = async (req, res) => {
+    const bookId = req.params.id;
+    try {
+        const comments = await Comment_1.default.find({ book: bookId }).populate("user", "name");
+        res.status(200).json(comments);
+    }
+    catch (error) {
+        res.status(500).json({ message: "コメントの取得に失敗しました。" });
+    }
+};
+exports.getComments = getComments;
 // コメント更新
 const updateComment = async (req, res) => {
     const { id: userId } = req.body.user;
