@@ -6,7 +6,7 @@ const AddBook: React.FC = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,12 +54,7 @@ const AddBook: React.FC = () => {
         </div>
         <div>
           <label>イメージ:</label>
-          <input
-            type="file"
-            onChange={(e) =>
-              setImage(e.target.files ? e.target.files[0].name : null)
-            }
-          />
+          <input type="file" onChange={(e) => setImage(e.target.files![0])} />
         </div>
         <button type="submit">追加</button>
       </form>

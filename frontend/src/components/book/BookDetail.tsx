@@ -49,7 +49,11 @@ const BookDetail: React.FC = () => {
       <p>著者:{book.author}</p>
       <p>作成者:{book.addedBy.name}</p>
       <p>説明:{book.description}</p>
-      {book.image && <img src={book.image} alt={book.title} />}
+      <img
+        src={`http://localhost:3000${book.image}`} // サーバーのベースURLを追加
+        alt={book.title}
+        style={{ width: "150px", height: "150px" }}
+      />
       {userId === book.addedBy._id && (
         <>
           <Link to={`/books/${id}/update`}>編集</Link>

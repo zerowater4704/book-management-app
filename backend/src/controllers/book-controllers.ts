@@ -1,16 +1,19 @@
 import { Response, Request } from "express";
 import Book from "../model/Book";
+import fs from "fs";
+import path from "path";
 
 //book追加
 export const addBook = async (req: Request, res: Response) => {
   const { title, author, image, description } = req.body;
-  const { id: userId } = req.body.user;
+  const userId = req.user?.id;
+  const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
 
   const newBook = new Book({
     title,
     author,
     description,
-    image,
+    image: imagePath,
     reviews: [],
     addedBy: userId,
   });
@@ -50,7 +53,7 @@ export const getBook = async (req: Request, res: Response) => {
 //book 更新
 export const updateBook = async (req: Request, res: Response) => {
   const { title, author, image, description, bookId } = req.body;
-  const { id: userId } = req.body.user;
+  const userId = req.user?.id;
 
   try {
     const book = await Book.findById(bookId);
@@ -75,7 +78,7 @@ export const updateBook = async (req: Request, res: Response) => {
 
 // book削除
 export const deleteBook = async (req: Request, res: Response) => {
-  const { id: userId } = req.body.user;
+  const userId = req.user?.id;
   const bookId = req.params.id;
 
   try {
@@ -86,6 +89,17 @@ export const deleteBook = async (req: Request, res: Response) => {
 
     if (book.addedBy.toString() !== userId) {
       return res.status(404).json({ message: "本の削除の権限がありません。" });
+    }
+
+    if (book.image) {
+      const imagePath = path.join(__dirname, "../..", book.image);
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error("画像の削除に失敗しました:", err);
+        } else {
+          console.log("画像が正常に削除されました:", book.image);
+        }
+      });
     }
 
     const deleteBook = await Book.findByIdAndDelete(bookId);
