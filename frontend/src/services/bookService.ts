@@ -6,18 +6,24 @@ export const addBook = async (
   title: string,
   author: string,
   description: string,
-  image?: string
+  image?: File
 ) => {
   const token = localStorage.getItem("userToken");
-  const response = await axios.post(
-    `${API_URL}/add`,
-    { title, author, description, image },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("author", author);
+  formData.append("description", description);
+  if (image) {
+    formData.append("image", image);
+  }
+
+  const response = await axios.post(`${API_URL}/add`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 };
 

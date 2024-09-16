@@ -70,7 +70,11 @@ const BookList: React.FC = () => {
                 ? "いいね取り消し"
                 : "いいね"}
             </button>
-            <p>{book.image}</p>
+            <img
+              src={`http://localhost:3000${book.image}`} // サーバーのベースURLを追加
+              alt={book.title}
+              style={{ width: "150px", height: "150px" }}
+            />
             <Link to={`/books/${book._id}`}>詳細を見る</Link>
           </li>
         ))}

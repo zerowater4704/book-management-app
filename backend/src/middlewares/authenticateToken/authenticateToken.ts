@@ -10,17 +10,16 @@ export const authenticateToken = (
 
   const token = authHeader && authHeader.split(" ")[1];
 
-  if (!token)
-    return res.status(401).json({ message: "トークンが見つかりません。" });
+  if (!token) return res.status(401).send("トークンが見つかりません。");
 
-  try {
-    const decoded = jwt.verify(
-      token,
-      process.env.ACCESS_TOKEN_SECRET as string
-    );
-    req.body.user = decoded;
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: "無効なトークンです。" });
-  }
+  jwt.verify(
+    token,
+    process.env.ACCESS_TOKEN_SECRET as string,
+    (err: any, user: any) => {
+      if (err) return res.status(403).send("無効なトークンです。");
+
+      req.user = user;
+      next();
+    }
+  );
 };

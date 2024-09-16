@@ -5,15 +5,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updatelikeBook = exports.deleteBook = exports.updateBook = exports.getBook = exports.getBooks = exports.addBook = void 0;
 const Book_1 = __importDefault(require("../model/Book"));
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 //book追加
 const addBook = async (req, res) => {
+    var _a;
     const { title, author, image, description } = req.body;
-    const { id: userId } = req.body.user;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
     const newBook = new Book_1.default({
         title,
         author,
         description,
-        image,
+        image: imagePath,
         reviews: [],
         addedBy: userId,
     });
@@ -53,8 +57,9 @@ const getBook = async (req, res) => {
 exports.getBook = getBook;
 //book 更新
 const updateBook = async (req, res) => {
+    var _a;
     const { title, author, image, description, bookId } = req.body;
-    const { id: userId } = req.body.user;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
     try {
         const book = await Book_1.default.findById(bookId);
         if (!book) {
@@ -73,7 +78,8 @@ const updateBook = async (req, res) => {
 exports.updateBook = updateBook;
 // book削除
 const deleteBook = async (req, res) => {
-    const { id: userId } = req.body.user;
+    var _a;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
     const bookId = req.params.id;
     try {
         const book = await Book_1.default.findById(bookId);
@@ -82,6 +88,17 @@ const deleteBook = async (req, res) => {
         }
         if (book.addedBy.toString() !== userId) {
             return res.status(404).json({ message: "本の削除の権限がありません。" });
+        }
+        if (book.image) {
+            const imagePath = path_1.default.join(__dirname, "../..", book.image);
+            fs_1.default.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error("画像の削除に失敗しました:", err);
+                }
+                else {
+                    console.log("画像が正常に削除されました:", book.image);
+                }
+            });
         }
         const deleteBook = await Book_1.default.findByIdAndDelete(bookId);
         res.status(200).json({ message: "本を削除しました。", deleteBook });
