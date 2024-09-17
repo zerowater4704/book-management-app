@@ -39,20 +39,21 @@ export const updateUser = async (
   image?: string
 ) => {
   const token = localStorage.getItem("userToken");
-  const response = await axios.put(
-    `${API_URL}/update`,
-    {
-      name,
-      email,
-      password,
-      image,
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("email", email);
+  formData.append("password", password);
+  if (image) {
+    formData.append("image", image);
+  }
+
+  const response = await axios.put(`${API_URL}/update`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  });
   return response.data;
 };
 

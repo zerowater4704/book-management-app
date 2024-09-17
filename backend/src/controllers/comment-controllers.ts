@@ -5,7 +5,7 @@ import User from "../model/User";
 
 // コメント作成
 export const createComment = async (req: Request, res: Response) => {
-  const { id: userId } = req.body.user;
+  const userId = req.user?.id;
   const { bookId, comment, rating } = req.body;
 
   try {
@@ -51,7 +51,7 @@ export const getComments = async (req: Request, res: Response) => {
 
 // コメント更新
 export const updateComment = async (req: Request, res: Response) => {
-  const { id: userId } = req.body.user;
+  const userId = req.user?.id;
   const commentId = req.params.id;
   const { comment } = req.body;
 
@@ -82,7 +82,7 @@ export const updateComment = async (req: Request, res: Response) => {
 
 // コメント削除
 export const deleteComment = async (req: Request, res: Response) => {
-  const { id: userId } = req.body.user;
+  const userId = req.user?.id;
   const commentId = req.params.id;
 
   try {

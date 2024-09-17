@@ -29,7 +29,7 @@ export const addBook = async (req: Request, res: Response) => {
 //book一覧
 export const getBooks = async (req: Request, res: Response) => {
   try {
-    const allBook = await Book.find();
+    const allBook = await Book.find().populate("addedBy", "name");
     res.status(200).json(allBook);
   } catch (error) {
     res.status(500).json({ message: "本一覧取得に失敗しました。" });

@@ -74,40 +74,55 @@ const CommentList: React.FC<{ bookId: string }> = ({ bookId }) => {
   };
 
   return (
-    <div>
-      <h3>コメント</h3>
-      <ul>
+    <div className="mt-8">
+      <h3 className="text-2xl font-semibold text-gray-800 mb-4">コメント</h3>
+      <ul className="space-y-4">
         {comments.map((comment) => (
-          <li key={comment._id}>
+          <li key={comment._id} className="bg-gray-100 p-4 rounded-lg shadow">
             {editCommentId === comment._id ? (
               <div>
                 {/* 編集モード */}
                 <textarea
                   value={editedComment}
                   onChange={(e) => setEditedComment(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
-                <button onClick={() => handleUpdateComment(comment._id)}>
-                  更新
-                </button>
-                <button onClick={() => setEditCommentId(null)}>
-                  キャンセル
-                </button>
+                <div className="mt-4 flex space-x-4">
+                  <button
+                    onClick={() => handleUpdateComment(comment._id)}
+                    className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600"
+                  >
+                    更新
+                  </button>
+                  <button
+                    onClick={() => setEditCommentId(null)}
+                    className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
+                  >
+                    キャンセル
+                  </button>
+                </div>
               </div>
             ) : (
               <div>
                 {/* 通常表示モード */}
-                <p>{comment.comment}</p>
-                <p>投稿者: {comment.user.name}</p>
+                <p className="text-sm text-gray-500">
+                  投稿者: {comment.user.name}
+                </p>
+                <p className="text-gray-800">{comment.comment}</p>
                 {comment.user._id === userId && (
-                  <div>
+                  <div className="mt-2 flex space-x-4">
                     <button
                       onClick={() =>
                         handleEditComment(comment._id, comment.comment)
                       }
+                      className="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600"
                     >
                       編集
                     </button>
-                    <button onClick={() => handleDeleteComment(comment._id)}>
+                    <button
+                      onClick={() => handleDeleteComment(comment._id)}
+                      className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600"
+                    >
                       削除
                     </button>
                   </div>
@@ -117,13 +132,19 @@ const CommentList: React.FC<{ bookId: string }> = ({ bookId }) => {
           </li>
         ))}
       </ul>
-      <div>
+      <div className="mt-6">
         <textarea
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="コメント追加"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
         ></textarea>
-        <button onClick={handelAddComment}>コメント追加</button>
+        <button
+          onClick={handelAddComment}
+          className="mt-4 w-full bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600"
+        >
+          コメント追加
+        </button>
       </div>
     </div>
   );
