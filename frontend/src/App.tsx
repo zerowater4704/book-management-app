@@ -9,6 +9,7 @@ import AddBook from "./components/book/AddBook";
 import BookList from "./components/book/BookList";
 import BookDetail from "./components/book/BookDetail";
 import UpdateBook from "./components/book/UpdateBook";
+import LikedBooks from "./components/book/LikedBooks";
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -26,69 +27,100 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/books">書籍一覧</Link>
-          </li>
-          {isAuthenticated && (
-            <>
+      <div className="min-h-screen flex flex-col">
+        <nav className="bg-gray-800 p-4 text-white">
+          <div className="container mx-auto flex justify-between items-center">
+            <div className="text-2xl font-bold">
+              <Link to="/">Book Management</Link>
+            </div>
+
+            <ul className="flex space-x-4">
               <li>
-                <Link to="/books/add">書籍追加</Link>
-              </li>
-              <li>ようこそ、{userName}さん</li>{" "}
-              <li>
-                <Link
-                  to="/"
-                  onClick={() => {
-                    setIsAuthenticated(false);
-                    localStorage.removeItem("userToken");
-                    localStorage.removeItem("userName");
-                  }}
-                >
-                  ログアウト
+                <Link to="/" className="hover:text-yellow-400">
+                  Home
                 </Link>
               </li>
-            </>
-          )}
-          {!isAuthenticated && (
-            <>
-              <li>
-                <Link to="/signup">会員登録</Link>
-              </li>
-              <li>
-                <Link to="/login">ログイン</Link>
-              </li>
-            </>
-          )}
-        </ul>
-      </nav>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/signup"
-          element={<Signup setIsAuthenticated={setIsAuthenticated} />}
-        />
-        <Route
-          path="/login"
-          element={<Login setIsAuthenticated={setIsAuthenticated} />}
-        />
-        <Route
-          path="/update"
-          element={<UpdateUser setIsAuthenticated={setIsAuthenticated} />}
-        />
-        <Route
-          path="/delete"
-          element={<DeleteUser setIsAuthenticated={setIsAuthenticated} />}
-        />
-        <Route path="/books/add" element={<AddBook />} />
-        <Route path="/books" element={<BookList />} />
-        <Route path="/books/:id" element={<BookDetail />} />
-        <Route path="/books/:id/update" element={<UpdateBook />} />
-      </Routes>
+              {isAuthenticated && (
+                <>
+                  <li>
+                    <Link to="/likes" className="hover:text-yellow-400">
+                      Like
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/books/add" className="hover:text-yellow-400">
+                      書籍追加
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="hover:text-yellow-400"
+                      onClick={() => {
+                        setIsAuthenticated(false);
+                        localStorage.removeItem("userToken");
+                        localStorage.removeItem("userName");
+                      }}
+                    >
+                      ログアウト
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/update" className="hover:text-yellow-400">
+                      <span className="font-bold">{userName}</span>さん
+                    </Link>
+                  </li>
+                </>
+              )}
+              {!isAuthenticated && (
+                <>
+                  <li>
+                    <Link to="/signup" className="hover:text-yellow-400">
+                      会員登録
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/login" className="hover:text-yellow-400">
+                      ログイン
+                    </Link>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
+        </nav>
+
+        <main className="flex-grow container mx-auto p-6">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/signup"
+              element={<Signup setIsAuthenticated={setIsAuthenticated} />}
+            />
+            <Route
+              path="/login"
+              element={<Login setIsAuthenticated={setIsAuthenticated} />}
+            />
+            <Route
+              path="/update"
+              element={<UpdateUser setIsAuthenticated={setIsAuthenticated} />}
+            />
+            <Route
+              path="/delete"
+              element={<DeleteUser setIsAuthenticated={setIsAuthenticated} />}
+            />
+            <Route path="/books/add" element={<AddBook />} />
+            <Route path="/likes" element={<LikedBooks />} />
+            <Route path="/books/:id" element={<BookDetail />} />
+            <Route path="/books/:id/update" element={<UpdateBook />} />
+          </Routes>
+        </main>
+
+        {/* フッター */}
+        <footer className="bg-gray-800 text-white text-center p-4">
+          &copy; {new Date().getFullYear()} Book Management.
+        </footer>
+      </div>
     </Router>
   );
 };

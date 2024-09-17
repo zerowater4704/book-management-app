@@ -8,7 +8,8 @@ const Comment_1 = __importDefault(require("../model/Comment"));
 const Book_1 = __importDefault(require("../model/Book"));
 // コメント作成
 const createComment = async (req, res) => {
-    const { id: userId } = req.body.user;
+    var _a;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
     const { bookId, comment, rating } = req.body;
     try {
         const findBook = await Book_1.default.findById(bookId);
@@ -45,7 +46,8 @@ const getComments = async (req, res) => {
 exports.getComments = getComments;
 // コメント更新
 const updateComment = async (req, res) => {
-    const { id: userId } = req.body.user;
+    var _a;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
     const commentId = req.params.id;
     const { comment } = req.body;
     try {
@@ -70,7 +72,8 @@ const updateComment = async (req, res) => {
 exports.updateComment = updateComment;
 // コメント削除
 const deleteComment = async (req, res) => {
-    const { id: userId } = req.body.user;
+    var _a;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
     const commentId = req.params.id;
     try {
         const comment = await Comment_1.default.findById(commentId);

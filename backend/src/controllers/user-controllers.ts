@@ -58,7 +58,11 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 export const updateUser = async (req: Request, res: Response) => {
-  const { id: userId } = req.body.user;
+  if (!req.user) {
+    return res.status(401).json({ message: "認証されていません。" });
+  }
+
+  const userId = req.user.id;
   const { name, email, password, image } = req.body;
 
   const updateData: any = { name, email, image };
@@ -82,7 +86,11 @@ export const updateUser = async (req: Request, res: Response) => {
 };
 
 export const deleteUser = async (req: Request, res: Response) => {
-  const { id: userId } = req.body.user;
+  if (!req.user) {
+    return res.status(401).json({ message: "認証されていません。" });
+  }
+
+  const userId = req.user.id;
   const { password } = req.body;
 
   try {

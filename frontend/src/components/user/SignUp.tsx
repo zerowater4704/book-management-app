@@ -32,48 +32,88 @@ const SignUp: React.FC<SignUpProps> = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <form onSubmit={handelSignUp}>
-      <div>
-        <label>名前：</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="名前"
-          required
-        />
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="max-w-md w-full bg-white p-8 shadow-lg rounded-lg">
+        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+          会員登録
+        </h2>
+        <form onSubmit={handelSignUp} className="space-y-6">
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              名前
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="名前"
+              required
+              className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              メールアドレス
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="email@example.com"
+              required
+              className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              パスワード
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="パスワード"
+              required
+              className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="image"
+              className="block text-sm font-medium text-gray-700"
+            >
+              イメージ
+            </label>
+            <input
+              type="file"
+              id="image"
+              onChange={(e) =>
+                setImage(e.target.files ? e.target.files[0].name : null)
+              }
+              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            会員登録
+          </button>
+        </form>
       </div>
-      <div>
-        <label>Email：</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-        />
-      </div>
-      <div>
-        <label>パスワード：</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-        />
-      </div>
-      <div>
-        <label>イメージ：</label>
-        <input
-          type="file"
-          onChange={(e) =>
-            setImage(e.target.files ? e.target.files[0].name : null)
-          }
-        />
-      </div>
-      <button type="submit">会員登録</button>
-    </form>
+    </div>
   );
 };
 

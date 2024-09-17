@@ -33,7 +33,7 @@ exports.addBook = addBook;
 //book一覧
 const getBooks = async (req, res) => {
     try {
-        const allBook = await Book_1.default.find();
+        const allBook = await Book_1.default.find().populate("addedBy", "name");
         res.status(200).json(allBook);
     }
     catch (error) {

@@ -52,7 +52,10 @@ const loginUser = async (req, res) => {
 };
 exports.loginUser = loginUser;
 const updateUser = async (req, res) => {
-    const { id: userId } = req.body.user;
+    if (!req.user) {
+        return res.status(401).json({ message: "認証されていません。" });
+    }
+    const userId = req.user.id;
     const { name, email, password, image } = req.body;
     const updateData = { name, email, image };
     // パスワードが送信された場合、ハッシュ化して保存
@@ -74,7 +77,10 @@ const updateUser = async (req, res) => {
 };
 exports.updateUser = updateUser;
 const deleteUser = async (req, res) => {
-    const { id: userId } = req.body.user;
+    if (!req.user) {
+        return res.status(401).json({ message: "認証されていません。" });
+    }
+    const userId = req.user.id;
     const { password } = req.body;
     try {
         const user = await User_1.default.findById(userId);
