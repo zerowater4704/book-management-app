@@ -10,19 +10,13 @@ const SignUp: React.FC<SignUpProps> = ({ setIsAuthenticated }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [image, setImage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handelSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const userData = await register(
-        name,
-        email,
-        password,
-        image || undefined
-      );
+      const userData = await register(name, email, password);
       console.log("会員登録に成功しました。", userData);
       setIsAuthenticated(true);
       navigate("/");
@@ -87,22 +81,6 @@ const SignUp: React.FC<SignUpProps> = ({ setIsAuthenticated }) => {
               placeholder="パスワード"
               required
               className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="image"
-              className="block text-sm font-medium text-gray-700"
-            >
-              イメージ
-            </label>
-            <input
-              type="file"
-              id="image"
-              onChange={(e) =>
-                setImage(e.target.files ? e.target.files[0].name : null)
-              }
-              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
             />
           </div>
           <button

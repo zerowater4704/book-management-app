@@ -7,7 +7,7 @@ import path from "path";
 export const addBook = async (req: Request, res: Response) => {
   const { title, author, image, description } = req.body;
   const userId = req.user?.id;
-  const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+  const imagePath = req.file ? `/uploads/book/${req.file.filename}` : null;
 
   const newBook = new Book({
     title,
