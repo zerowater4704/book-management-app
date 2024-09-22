@@ -23,7 +23,7 @@ const App: React.FC = () => {
       setIsAuthenticated(true);
       setUserName(storedUserName);
     }
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <Router>

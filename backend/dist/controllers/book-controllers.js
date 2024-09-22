@@ -12,7 +12,7 @@ const addBook = async (req, res) => {
     var _a;
     const { title, author, image, description } = req.body;
     const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+    const imagePath = req.file ? `/uploads/book/${req.file.filename}` : null;
     const newBook = new Book_1.default({
         title,
         author,
